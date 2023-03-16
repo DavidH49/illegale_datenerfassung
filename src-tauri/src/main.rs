@@ -3,24 +3,49 @@
 
 use tauri::generate_handler;
 use tauri::generate_context;
+use rusqlite::{Connection, Result};
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command]
-fn gather_info(fname: &str, lname: &str, mail: &str, pnum: &str, gen: &str, bday: &str, balls: &str) -> String {
-    let user = User {
+fn gather_info(fname: &str, lname: &str, mail: &str, pnum: &str, gen: &str, bday: &str, balls: &str, panzerschorle: bool) -> String {
+
+    // If balls is not a number, default it to 0
+    let balls: u8 = match balls.trim().parse() {
+        Ok(num) => num,
+        Err(_) => 0
+    };
+
+
+    // Creates the user object
+    let u = User {
         first_name: fname.to_string(),
         last_name: lname.to_string(),
         email: mail.to_string(),
         phone: pnum.to_string(),
         gender: gen.to_string(),
         birth: bday.to_string(),
-        testicles: balls.trim().parse().unwrap()
+        testicles: balls,
+        drinks_panzerschorle: if panzerschorle { 1 } else { 0 }
     };
 
-    println!("Name: {} {}\nEmail Adress: {}\nPhone Number: {}\nGender: {}\nBirthdate: {}\nTesticles: {}",
-             user.first_name, user.last_name, user.email, user.phone, user.gender, user.birth, user.testicles);
+    // Inserts the user into users_db.db
+    let conn = connect_db().unwrap();
+    send_user_data
+        (&conn, &u)
+        .expect("Data couldn't be sent!");
 
-    format!("Thank you for your user info.")
+
+    // Just for debug purposes, might remove that when db works
+    println!("Name: {} {}\nEmail Adress: {}\nPhone Number: {}\nGender: {}\nBirthdate: {}\nTesticles: {}\nDrinks Panzerschorle: {}",
+             u.first_name, u.last_name, u.email, u.phone, u.gender, u.birth, u.testicles, u.drinks_panzerschorle);
+
+    // If the user doesn't drink Panzerschorle, put them on the hit list.
+    if panzerschorle {
+        format!("Vielen Dank für Ihre Informationen.")
+    } else {
+        add_to_hitlist(&conn);
+        format!("Kaufen Sie sich sofort eine Panzerschorle bei Ihrer lokalen Tankstelle oder Supermarkt, sonst kommen wir zu Ihnen nachhause!")
+    }
 }
 
 
@@ -33,6 +58,33 @@ fn main() {
 
 
 
+fn connect_db() -> Result<Connection> {
+    let db_path = "./../users_db.db";
+    let conn = Connection::open(db_path)?;
+
+    Ok(conn)
+}
+
+fn send_user_data(conn: &Connection, u: &User) -> Result<()> {
+    let query: &str = "INSERT INTO User (FirstName, LastName, EMailAddress, PhoneNumber, Gender, BirthDate, Testicles, DrinksPanzerschorle) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)";
+
+    let u = [&u.first_name, &u.last_name, &u.email, &u.phone, &u.gender, &u.birth, &u.testicles.to_string(), &u.drinks_panzerschorle.to_string()];
+
+    conn.execute
+        (query, u)
+        .expect("Data couldn't be sent!");
+
+    Ok(())
+}
+
+fn add_to_hitlist(conn: &Connection) {
+    let query = "INSERT INTO HitList (User) VALUES (?1)";
+
+    conn.execute
+        (query, [conn.last_insert_rowid()])
+        .expect("The user couldn't be added to the hit list.");
+}
+
 
 struct User {
     first_name: String,
@@ -41,10 +93,11 @@ struct User {
     phone: String,
     gender: String,
     birth: String,
-    testicles: u8
+    testicles: u8,
+    drinks_panzerschorle: u8
 }
 
-/*
+/* Genders: Male, Female, Diverse, Cowboysfromhellgender
 enum Gender {
     M,
     F,

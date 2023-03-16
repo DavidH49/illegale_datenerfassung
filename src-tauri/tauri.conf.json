@@ -8,7 +8,7 @@
   },
   "package": {
     "productName": "illegale_datenerfassung",
-    "version": "0.1.0"
+    "version": "0.2.0"
   },
   "tauri": {
     "allowlist": {
@@ -42,7 +42,7 @@
         "resizable": false,
         "title": "Illegale Datenerfassung",
         "width": 700,
-        "height": 765
+        "height": 850
       }
     ]
   }

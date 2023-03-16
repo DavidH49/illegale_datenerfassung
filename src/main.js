@@ -7,6 +7,7 @@ let phoneInputEl;
 let genderInputEl;
 let dateInputEl;
 let testiclesInputEl;
+let panzerschorleInputEl;
 let greetMsgEl;
 
 async function gather_info() {
@@ -18,8 +19,10 @@ async function gather_info() {
     pnum: phoneInputEl.value,
     gen: genderInputEl.value,
     bday: dateInputEl.value,
-    balls: testiclesInputEl.value
+    balls: testiclesInputEl.value,
+    panzerschorle: panzerschorleInputEl.checked
   });
+
 }
 
 window.addEventListener("DOMContentLoaded", () => {
@@ -30,6 +33,7 @@ window.addEventListener("DOMContentLoaded", () => {
   genderInputEl = document.querySelector("#gender-input");
   dateInputEl = document.querySelector("#birthdate-input");
   testiclesInputEl = document.querySelector("#testicles-input");
+  panzerschorleInputEl = document.querySelector("#panzerschorle-cb");
 
   greetMsgEl = document.querySelector("#greet-msg");
 

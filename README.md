@@ -4,7 +4,7 @@ This project is just a joke.
 None of the things you enter in the program will be saved anywhere except in the SQLite database "users_db.db"
 
 
-Just found out about a problem with the program.
+Just found out a problem with the program.
 The final program crashes when you try to send your data.
 I believe it's because it can't find the database.
 

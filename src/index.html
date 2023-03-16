@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="styles.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Illegale Datenerfassung</title>
+    <script type="module" src="/main.js" defer></script>
+  </head>
+
+  <body>
+    <h1>Programm zur Erfassung von Daten.</h1>
+    <p>Alle Daten werden ohne Einwilligung des Benutzers gespeichert.</p>
+
+    <div class="container">
+      <div class="row">
+        <div>
+          <input id="fname-input" placeholder="Vorname" />
+        </div>
+      </div>
+
+      <div class="row">
+        <input id="lname-input" placeholder="Nachname" />
+      </div>
+
+      <div class="row">
+        <input type="email" id="email-input" placeholder="E-Mail Adresse">
+      </div>
+
+      <div>
+        <input type="number" id="phone-input" placeholder="Telefonnummer" min="0">
+      </div>
+
+      <div class="row">
+        <input id="gender-input" placeholder="Geschlecht"/>
+      </div>
+
+      <div class="row">
+        <input type="date" id="birthdate-input">
+      </div>
+
+      <div class="row">
+        <input type="number" id="testicles-input" placeholder="Hoden" min="0" max="255">
+      </div>
+
+      <div class="row" style="margin-top: 1em">
+        <input type="checkbox" id="panzerschorle-cb">
+        <label for="panzerschorle-cb" style="text-align: left; margin-top: .65em; margin-left: 3em">Ja, ich trinke gerne Panzerschorle</label>
+      </div>
+
+      <!-- agree-cb macht nichts. Die Checkbox ist nur dazu da, den Benutzer glauben zu lassen, er habe eine Wahl, ob seine Daten verkauft werden. -->
+      <div class="row" style="margin-top: 3em">
+        <input type="checkbox" id="agree-cb" />
+        <label for="agree-cb" style="text-align: left; margin-left: 3em">(optional) Ich stimme zu, dass meine Daten dauerhaft<br>gespeichert werden und für viel Profit verkauft werden.</label>
+      </div>
+
+
+      <div class="row" style="margin-top: 2em">
+        <button id="send-button" type="button">Send</button>
+      </div>
+
+      <p id="greet-msg"></p>
+    </div>
+  </body>
+</html>
